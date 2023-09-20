@@ -1,0 +1,20 @@
+.nav{
+background-color: bisque;
+display: flex;
+
+}
+
+@media all and (max-width:1000px){
+    .nav{
+        justify-content: end;
+    }
+}
+
+.nav a{
+    
+}
+
+*{
+margin: 0px;
+
+}
