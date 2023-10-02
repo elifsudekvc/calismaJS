@@ -1,0 +1,202 @@
+$deneme: red;
+//interpolation ne bak.
+body{
+    background-color: $deneme;
+}
+
+//nesting(iç içe kullanım) 5-18
+ul{
+    background-color: aqua;
+    background-repeat: no-repeat;
+    li{
+        background-color: black;
+        a{
+            background: {
+                color: red;
+                attachment: fixed;
+                repeat:no-repeat;
+            }
+            font: {
+                size:15 px;
+                family:verdana;
+            }
+        }
+    }
+}
+
+//değişkende birden fazla değer saklama 20-23
+$ozellik: red,black,solid,12;
+body{
+    background-color: nth($ozellik, 1 );
+    border-style: nth($ozellik , 3 );
+};
+
+//each ile dizi içiden dönme 25-39
+//burada tek dezavantaj #111 şeklinde olan renkleri yazmıyor. 
+$colors: red,black,blue,green;
+//color değişken ismi
+@each $color in $colors{
+    .bg-#{$color}{  //.bg-#{$color} adında bir class oluşturduk.
+        //bu class colorları tek tek dönecek.
+        background-color: $color;
+    }
+}
+
+//MAP kavramı 41-60
+$theme:(
+    dark: #111,
+    primary: cadetblue,
+    danger: crimson,
+    warning: orangered
+);
+//map ile bu şekilde #111 olan rekler de yazılır.
+@each $key, $value in $theme{
+    .bg-#{$key}{
+        background-color: $value;
+    }
+}
+
+body{
+    background-color: map-get($theme , dark );
+    background: map-keys($theme);
+    //map-merge 2 listeyi birleştirir.
+    //map-remove içinden öğe siler
+
+}
+
+//mixin 62-90
+//mixin ile yazdığımız belli başlı kodları istediğimiz
+//yerde include ile içeriyor diyerek çağırabiliriz
+@mixin center{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+body{
+    @include center;
+}
+.buton{
+    @include center;
+}
+
+//mixin ile aynı durumlara farklı değerler verme
+
+@mixin kutu($genislik:500px,$yukseklik:100px,$renk:blue){//varsayılan değerler için
+    width: $genislik;
+    height: $yukseklik;
+    color:$renk;
+}
+
+kutu1{@include kutu(100px,50px,red)};
+kutu2{@include kutu(200px,30px,rgb(9, 4, 4))};
+kutu3{@include kutu()}//değer vermediğimiz için varsayılan değerleri aldı.
+
+//extend miras alma 92-105
+//mixinle aynı görevi görüyor farkı ise mixin css e 
+//çevrilince tüm classlara kodları yazıyor kod fazlalığı
+//oluyor extend de kod daha az.
+.btn{
+    padding: 10px 15px;
+    cursor:pointer;
+    border:none;
+    border-radius: 3px;
+}
+
+.btn-danger{
+    background-color: red;
+    @extend .btn;//btn classının özelliklerini alır.
+}
+.btn-primary{
+    background-color: lightskyblue;
+    @extend .btn;
+}
+
+//operatörler 107-111
+body{
+    width: 200px * 3; //calc() fonksiyonuna gerek 
+    //kalmadan işlem yapabiliriz.// + - * % kullanılabilir
+    content: 4==4; //true false döner. == != < > kullanılabilir
+    content2: (5>10) and (50==51)//and or not kullanılır.
+
+}
+
+// if else 113-115
+$tema: "koyu";
+
+@if($tema=="koyu"){
+    body{background-color: rgb(255, 255, 255);}
+}@else if($tema=="acik"){
+    body{background-color: rgb(0, 0, 0);}
+}@else if($tema=="kırmızı"){
+    body{background-color:  red}
+}@else{
+ body{background-color:blue}
+}
+
+//fonksiyonlar 117-119
+@function ekle($sayi1, $sayi2){
+    @return #{$sayi1+$sayi2}px;
+}
+
+.box1{
+    width: ekle(200,300);//hesaplar 500 px şeklinde yazar.
+}
+
+//string fonksiyonlar 121-126
+$degisken:solid;
+
+body::after{
+    content:quote($degisken);//tırnak içine alır
+    content2:unique_id();//rastgele id verir
+    content3:to_upper_case("selam");
+    content4:to_lower_case("MerhABA");
+}
+
+//number fonksiyonlar 128-133
+body{
+    width:#{abs(-32)}px;//pozitife çevirir
+    width:#{ceil(3.4)}px;//yukarı yuvarlar. floor deseydik aşağı yuvarlar. round normal yuvarlar.
+    width:#{max(3,4,5,6,7)}px;//büyüğü verir min yazınca küçüğü verir
+    width:#{random(100)}px; //0 100 arası rastgele değer oluşturur
+}
+
+//list fonksiyonlar 135-138
+$liste: 5px 14px solid red;
+nav{
+background: append($liste, coral);//ekleme yapar
+background: index($liste, solid);//kaçıncı indexte
+}
+
+//color fonksiyonları 140-144
+$renk:orange;
+body{
+    border: 50px solid complement($renk);//renge özel renk yapar
+    background-color:$renk;
+    background: no-repeat cover fixed;
+}
+
+//for döngüsü 146-204
+@for $i from 1 through 10{
+    .font-size-#{$i}{
+        font-size:$i* 1em ;
+    }
+}
+
+$renkler:red green orange black white;
+@for $i from 1 through length($renkler){
+    .color-#{$i}{
+        color: nth($renkler,$i);
+    }
+}
+
+//while döngüsü 204
+
+$a : 1;
+@while ($a < 11) {
+    .font-#($a){
+        font-size: #{$a}em;
+    }
+    $a : $a + 1;
+    
+}

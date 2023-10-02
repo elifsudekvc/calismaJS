@@ -1,10 +1,10 @@
+//event
 let degisiklik=() => {
 
 let now = document.getElementById("paragraf")
 now.innerHTML="PARAGRAF ÜSTÜNE GELİNDİ.";
 
 }
-
 
 let degisiklik2=() => {
 
@@ -13,7 +13,6 @@ let degisiklik2=() => {
     now.style.color="blue";
     
 };
-
 
 
 let sayfaDegis=() => {
