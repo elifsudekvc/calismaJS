@@ -194,7 +194,7 @@ $renkler:red green orange black white;
 
 $a : 1;
 @while ($a < 11) {
-    .font-#($a){
+    .font-#{$a}{
         font-size: #{$a}em;
     }
     $a : $a + 1;
